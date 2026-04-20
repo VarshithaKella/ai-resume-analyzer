@@ -1,17 +1,17 @@
 # AI Resume Analyzer 🚀
 
-An AI-powered Resume Analyzer that extracts key information, identifies skills, and evaluates resumes against job descriptions to generate an ATS (Applicant Tracking System) score.
+An AI-powered Resume Analyzer that extracts key information, identifies skills, and evaluates resumes against job descriptions to generate an ATS score.
 
 ---
 
 ## 📌 Features
 
-* 📄 Upload resume (PDF format)
-* 🤖 AI-based skill extraction (non rule-based)
-* 📊 ATS score generation based on job description
-* 🔍 Keyword matching with JD
-* 📑 Structured and formatted output
-* ⚡ Fast and efficient processing
+* Upload resume in PDF format
+* AI-based information and skill extraction
+* Resume analysis against job descriptions
+* ATS score generation
+* Structured and readable output
+* Fast processing for quick evaluation
 
 ---
 
@@ -19,19 +19,19 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
 
 * **Backend:** Node.js, Express.js
 * **Frontend:** HTML, CSS, JavaScript
-* **AI Integration:** OpenAI API
+* **AI Integration:** Groq API
 * **File Handling:** PDF parsing libraries
 
 ---
 
 ## ⚙️ How It Works
 
-1. User uploads a resume
-2. System extracts text from the PDF
-3. AI processes and identifies key details
-4. Skills are extracted and analyzed
-5. Resume is compared with job description
-6. ATS score is generated
+1. User uploads a resume.
+2. The system extracts text from the PDF.
+3. The Groq API processes the extracted content.
+4. Important details such as skills and experience are identified.
+5. The resume is compared with the given job description.
+6. An ATS score and analysis are generated.
 
 ---
 
@@ -43,7 +43,7 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
    git clone https://github.com/VarshithaKella/ai-resume-analyzer.git
    ```
 
-2. Navigate to project folder
+2. Move into the project folder
 
    ```bash
    cd ai-resume-analyzer
@@ -58,7 +58,7 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
 4. Create a `.env` file and add your API key
 
    ```env
-   OPENAI_API_KEY=your_api_key_here
+   GROQ_API_KEY=your_api_key_here
    ```
 
 5. Start the server
@@ -69,7 +69,7 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
 
 6. Open in browser
 
-   ```
+   ```text
    http://localhost:3000
    ```
 
@@ -78,17 +78,17 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
 ## 🎯 Use Cases
 
 * Students preparing for placements
-* Job seekers improving resumes
-* Resume screening automation
-* Career guidance tools
+* Job seekers improving their resumes
+* Basic resume screening workflows
+* Career guidance and resume evaluation tools
 
 ---
 
 ## 🚀 Future Improvements
 
-* Support for DOCX and image resumes
+* Support for DOCX resumes
 * Resume improvement suggestions
-* Advanced analytics dashboard
+* Better analytics and visual scoring
 * Integration with job portals
 
 ---
@@ -96,7 +96,4 @@ An AI-powered Resume Analyzer that extracts key information, identifies skills, 
 ## 👩‍💻 Author
 
 **Kella Varshitha**
-
-* GitHub: https://github.com/VarshithaKella
-
----
+GitHub: https://github.com/VarshithaKella
