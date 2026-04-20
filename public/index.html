@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Skill Extractor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef4ff, #f8fbff);
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 40px;
+      color: #1d4ed8;
+    }
+
+    .header p {
+      margin-top: 10px;
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .upload-card,
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .upload-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #f9fafb;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      resize: vertical;
+      font-size: 15px;
+      outline: none;
+      background: #f9fafb;
+    }
+
+    textarea:focus,
+    input[type="file"]:focus {
+      border-color: #2563eb;
+    }
+
+    .label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 24px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .score-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+
+    .score-number {
+      font-size: 46px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .score-subtext {
+      margin-top: 6px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    .section h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: #111827;
+      border-left: 5px solid #2563eb;
+      padding-left: 10px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-badge {
+      background: #e0ecff;
+      color: #1d4ed8;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .skill-badge:hover {
+      background: #2563eb;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .suggestion-list {
+      margin: 0;
+      padding-left: 22px;
+      line-height: 1.8;
+      color: #374151;
+    }
+
+    .message {
+      text-align: center;
+      font-weight: 600;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    .loading {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .error {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .success {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .empty {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 30px;
+      }
+
+      .upload-box {
+        flex-direction: column;
+      }
+
+      button,
+      input[type="file"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Resume ATS Analyzer</h1>
+      <p>Upload your resume, paste a job description, and get an ATS score with skill insights.</p>
+    </div>
+
+    <div class="upload-card">
+      <div class="upload-box">
+        <input type="file" id="fileInput" accept=".pdf" />
+        <button id="uploadBtn" onclick="uploadFile()">Analyze Resume</button>
+      </div>
+
+      <label class="label" for="jobDescription">Paste Job Description</label>
+      <textarea
+        id="jobDescription"
+        placeholder="Paste the job description here..."
+      ></textarea>
+
+      <div id="status"></div>
+    </div>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    function createSkillBadges(skills) {
+      if (!skills || !skills.length) {
+        return `<p class="empty">No items found.</p>`;
+      }
+
+      return `
+        <div class="skill-list">
+          ${skills.map(skill => `<span class="skill-badge">${skill}</span>`).join("")}
+        </div>
+      `;
+    }
+
+    function createSuggestions(items) {
+      if (!items || !items.length) {
+        return `<p class="empty">No suggestions available.</p>`;
+      }
+
+      return `
+        <ul class="suggestion-list">
+          ${items.map(item => `<li>${item}</li>`).join("")}
+        </ul>
+      `;
+    }
+
+    async function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const jobDescription = document.getElementById("jobDescription").value.trim();
+      const output = document.getElementById("output");
+      const status = document.getElementById("status");
+      const uploadBtn = document.getElementById("uploadBtn");
+
+      if (!fileInput.files.length) {
+        status.innerHTML = `<div class="message error">Please select a PDF resume first.</div>`;
+        output.innerHTML = "";
+        return;
+      }
+
+      if (!jobDescription) {
+        status.innerHTML = `<div class="message error">Please paste a job description.</div>`;
+        output.innerHTML = "";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("resume", fileInput.files[0]);
+      formData.append("jobDescription", jobDescription);
+
+      uploadBtn.disabled = true;
+      status.innerHTML = `<div class="message loading">Analyzing your resume...</div>`;
+      output.innerHTML = "";
+
+      try {
+        const res = await fetch("/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        console.log("SERVER RESPONSE:", data);
+
+        if (!res.ok || !data.success) {
+          status.innerHTML = `<div class="message error">${data.details || data.error || "Failed to process resume."}</div>`;
+          return;
+        }
+
+        const r = data.data || {};
+
+        status.innerHTML = `<div class="message success">Resume analyzed successfully.</div>`;
+
+        output.innerHTML = `
+          <div class="result-card">
+            <div class="score-card">
+              <div class="score-title">ATS Score</div>
+              <div class="score-number">${r.atsScore ?? 0}/100</div>
+              <div class="score-subtext">Based on keyword match, relevant skills, and resume section coverage</div>
+            </div>
+
+            <div class="section">
+              <h2>Matched Keywords</h2>
+              ${createSkillBadges(r.matchedKeywords)}
+            </div>
+
+            <div class="section">
+              <h2>Missing Keywords</h2>
+              ${createSkillBadges(r.missingKeywords)}
+            </div>
+
+            <div class="section">
+              <h2>Technical Skills</h2>
+              ${createSkillBadges(r.technicalSkills)}
+            </div>
+
+            <div class="section">
+              <h2>Tools and Platforms</h2>
+              ${createSkillBadges(r.toolsAndPlatforms)}
+            </div>
+
+            <div class="section">
+              <h2>Soft Skills</h2>
+              ${createSkillBadges(r.softSkills)}
+            </div>
+
+            <div class="section">
+              <h2>Suggestions to Improve Resume</h2>
+              ${createSuggestions(r.suggestions)}
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error("FRONTEND ERROR:", error);
+        status.innerHTML = `<div class="message error">${error.message}</div>`;
+      } finally {
+        uploadBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
